@@ -1,5 +1,5 @@
 {
-  "name": "express_s3_persistence",
+  "name": "drop_mini_box",
   "version": "0.1.0",
   "description": "REST API with S3 integration",
   "main": "server.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nickuhn/express_S3_persistence.git"
+    "url": "git+https://github.com/nickuhn/drop_mini_box.git"
   },
   "author": "Nick Kuhn",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nickuhn/express_S3_persistence/issues"
+    "url": "https://github.com/nickuhn/drop_mini_box/issues"
   },
-  "homepage": "https://github.com/nickuhn/express_S3_persistence#readme",
+  "homepage": "https://github.com/nickuhn/drop_mini_box#readme",
   "dependencies": {
     "body-parser": "^1.13.2",
     "express": "^4.13.1",

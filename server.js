@@ -1,9 +1,9 @@
 var express = require('express');
-var mongoose = require('mongoose');
 var app = express();
 
 var apiRouter = express.Router();
 require('./routes/users-routes')(apiRouter);
+require('./routes/files-routes')(apiRouter);
 
 app.use('/api', apiRouter);
 
