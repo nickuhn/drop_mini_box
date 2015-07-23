@@ -8,23 +8,22 @@ module.exports = function(router) {
     return res.status(500).json({msg:'server error'});
   }
 
-  router.route('/users')
+  router.route('/users/:user/files')
     .get(function(req, res) {
-      res.send({msg: 'GET on /users'});
+      res.send({msg: 'GET on /users/:user/files'});
     })
 
     .post(function(req, res) {
-      res.send({msg: 'POST on /users'});
+      res.send({msg: 'POST on /users/:user/files'});
     })
 
-  router.route('/users/:user')
+  router.route('/users/:user/files/:file')
     .put(function(req, res) {
-      res.send({msg: 'PUT on /users/:user'});
+      res.send({msg: 'PUT on /users/:user/files/:file'});
     })
 
     .delete(function(req, res) {
-      res.send({msg: 'DELETE on /users/:user'});
+      res.send({msg: 'DELETE on /users/:user/files/:file'});
     })
-
 
 }

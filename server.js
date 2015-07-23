@@ -4,6 +4,7 @@ var app = express();
 
 var apiRouter = express.Router();
 require('./routes/users-routes')(apiRouter);
+require('./routes/files-routes')(apiRouter);
 
 app.use('/api', apiRouter);
 
