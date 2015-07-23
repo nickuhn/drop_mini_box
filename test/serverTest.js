@@ -4,6 +4,7 @@ var mocha = require('mocha');
 var fs = require('fs');
 var expect = chai.expect;
 var server = require(__dirname + '/../server');
+process.env.MONGOURI = 'mongodb://localhost/userTest_db';
 chai.use(chaiHttp);
 
 describe('Users REST API', function() {
