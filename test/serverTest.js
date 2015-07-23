@@ -1,11 +1,16 @@
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 var mocha = require('mocha');
+var fs = require('fs');
 var expect = chai.expect;
 var server = require(__dirname + '/../server');
 chai.use(chaiHttp);
 
 describe('Users REST API', function() {
+  before(function(done) {
+    fs.mkdir(__dirname + '/../files/testing');
+    done();
+  });
   it('should respond to GET /users with list of users', function(done) {
     chai.request('localhost:3000')
       .get('/api/users')
@@ -19,9 +24,7 @@ describe('Users REST API', function() {
   it('should respond to POST /users by storing and returning a user', function(done) {
     chai.request('localhost:3000')
       .post('/api/users')
-      .send({name: 'Testy McTester',
-             files: ['file1']
-            })
+      .send({name: 'Testy McTester'})
       .end(function(err, res) {
         expect(err).to.eql(null);
         expect(res.status).to.eql(200);;
@@ -31,7 +34,7 @@ describe('Users REST API', function() {
   });
   it('should respond to PUT /users/:user by updating and returning a user', function(done) {
     chai.request('localhost:3000')
-      .put('/api/users/:user')
+      .put('/api/users/testing')
       .send({name: 'Carl'})
       .end(function(err, res) {
         expect(err).to.eql(null);
@@ -42,7 +45,7 @@ describe('Users REST API', function() {
   });
   it('should respond to DELETE /users/:user by deleting the user', function(done) {
     chai.request('localhost:3000')
-      .del('/api/users/:user')
+      .del('/api/users/Carl')
       .end(function(err, res) {
         expect(err).to.eql(null);
         expect(res.status).to.eql(200);;

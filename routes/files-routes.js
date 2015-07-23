@@ -15,7 +15,7 @@ module.exports = function(router) {
 
     .post(function(req, res) {
       res.send({msg: 'POST on /users/:user/files'});
-    })
+    });
 
   router.route('/users/:user/files/:file')
     .put(function(req, res) {
@@ -24,6 +24,6 @@ module.exports = function(router) {
 
     .delete(function(req, res) {
       res.send({msg: 'DELETE on /users/:user/files/:file'});
-    })
+    });
 
-}
+};
