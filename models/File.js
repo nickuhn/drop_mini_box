@@ -3,7 +3,6 @@ var Schema = mongoose.Schema;
 
 fileSchema = Schema({
   name: String,
-  content: String,
   url: String,
   user: {type: Schema.Types.ObjectId, ref: 'User'}
 });
