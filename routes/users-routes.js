@@ -1,9 +1,9 @@
 var bodyParser = require('body-parser');
+var File = require(__dirname + '/../models/File');
 var fs = require('fs');
 var AWS = require('aws-sdk');
 var User = require(__dirname + '/../models/User');
 var s3 = new AWS.S3();
-AWS.config.loadFromPath('./credentials/config.json');
 var parentBucket = 'nickuhnbucket/';
 
 module.exports = function(router) {
