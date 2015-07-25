@@ -65,35 +65,40 @@ module.exports = function(router) {
     })
     //deletes all files for a given user from the disc, mongodb and s3
     .delete(function(req, res) {
+      params = {Bucket: parentBucket};
+      params.Delete = {};
+      params.Delete.Objects = [];
       fs.readdir(__dirname + '/../files/' + req.params.user, function(err, files) {
         if (err) {
           res.send(err);
         } else {
           for (var i = 0; i < files.length; i++) {
             fs.unlinkSync(__dirname + '/../files/' + req.params.user + '/' + files[i]);
-            s3.deleteObject({Bucket: parentBucket, Key: req.params.user + '/' + files[i]}, function(err, data) {
-              if (err) {
-                res.send(err);
-              }
-            });
+            params.Delete.Objects.push({Key: req.params.user + '/' + files[i]});
           }
+          s3.deleteObjects(params, function(err, data) {
+            if (err) {
+              res.send(err)
+            } else {
+              User.findOne({name: req.params.user}, function (err, user){
+                if (err) {
+                  res.send(err);
+                } else {
+                  var ownerId = user._id;
+                  File.remove({user: ownerId}, function(err) {
+                    if (err) {
+                      res.send(err);
+                    } else {
+                      user.files = [];
+                      user.save();
+                      res.send({msg: 'deleted all files for: ' + req.params.user});
+                    }
+                  });
+                }
+              });
+            }
+          });
         }
-        User.findOne({name: req.params.user}, function (err, user){
-          if (err) {
-            res.send(err);
-          } else {
-            var ownerId = user._id;
-            File.remove({user: ownerId}, function(err) {
-              if (err) {
-                res.send(err);
-              } else {
-                user.files = [];
-                user.save();
-                res.send({msg: 'deleted all files for: ' + req.params.user});
-              }
-            });
-          }
-        });
       });
     });
 
