@@ -56,7 +56,8 @@ module.exports = function(router) {
             });
     })
 
-
+    //Renames user's name on mongodb, file name on hard disc,
+    //prefix on all files and bucket on s3.
     .put(function(req, res) {
       params = {Bucket: parentBucket};
       params.Delete = {};
