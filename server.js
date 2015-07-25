@@ -1,5 +1,5 @@
-var mongoose = require('mongoose');
 var express  = require('express');
+var mongoose = require('mongoose');
 var app      = express();
 
 mongoose.connect(process.env.MONGOURI || 'mongodb://localhost/files_db');

@@ -1,14 +1,14 @@
-var bodyParser   = require('body-parser');
-var File         = require(__dirname + '/../models/File');
 var fs           = require('fs');
 var AWS          = require('aws-sdk');
+var File         = require(__dirname + '/../models/File');
 var User         = require(__dirname + '/../models/User');
-var s3           = new AWS.S3();
+var bodyParser   = require('body-parser');
 var EventEmitter = require('events').EventEmitter;
-var parentBucket = 'nickuhnbucket';
+var s3           = new AWS.S3();
 var s3done       = false;
-var mongodbDone  = false;
 var hdDone       = false;
+var mongodbDone  = false;
+var parentBucket = 'nickuhnbucket';
 
 module.exports = function(router) {
   router.use(bodyParser.json());
@@ -41,6 +41,7 @@ module.exports = function(router) {
       s3done      = false;
       mongodbDone = false;
       hdDone      = false;
+
       fs.mkdir(__dirname + '/../files/' + req.body.name, function(err) {
         if (err) {
           sendRes(res, 'error');
@@ -48,6 +49,7 @@ module.exports = function(router) {
           ee.emit('hdDone');
         }
       });
+
       User.create(req.body, function(err, user) {
          if (err) {
           sendRes(res, 'error');
@@ -55,6 +57,7 @@ module.exports = function(router) {
           ee.emit('mongodbDone');
         }
       });
+
       s3.createBucket({Bucket: parentBucket + '/' + req.body.name}, function(err, data){
         if (err) {
           sendRes(res, 'error');
@@ -62,6 +65,7 @@ module.exports = function(router) {
           ee.emit('s3done');
         }
       });
+
       ee.on('s3done', function() {
         s3done = true;
         sendRes(res, message);
@@ -102,6 +106,7 @@ module.exports = function(router) {
       s3done                = false;
       params.Delete         = {};
       params.Delete.Objects = [];
+
       s3.createBucket({Bucket: parentBucket + '/' + req.body.name}, function(err, data){
         if (err) {
           sendRes(res, 'error');
@@ -137,6 +142,7 @@ module.exports = function(router) {
           });
         }
       });
+
       fs.rename(__dirname + '/../files/' + req.params.user, __dirname + '/../files/' + req.body.name, function(err) {
         if (err) {
           sendRes(res, 'error');
@@ -144,6 +150,7 @@ module.exports = function(router) {
           ee.emit('hdDone');
         }
       });
+
       User.update({name: req.params.user}, req.body, function(err, user) {
         if (err) {
           sendRes(res, 'error');
@@ -151,6 +158,7 @@ module.exports = function(router) {
           ee.emit('mongodbDone');
         }
       });
+
       ee.on('s3done', function() {
         s3done = true;
         sendRes(res, message);
@@ -175,6 +183,7 @@ module.exports = function(router) {
       hdDone                = false;
       params.Delete         = {};
       params.Delete.Objects = [];
+
       s3.listObjects({Bucket: parentBucket, Prefix: req.params.user + '/'}, function(err, data) {
         if (err) {
           sendRes(res, 'error');
@@ -198,6 +207,7 @@ module.exports = function(router) {
           });
         }
       });
+
       fs.readdir(__dirname + '/../files/' + req.params.user, function(err, files) {
         if (err) {
           sendRes(res, 'error');
@@ -214,6 +224,7 @@ module.exports = function(router) {
           });
         }
       });
+
       User.findOne({name: req.params.user}, function (err, user){
         if (err) {
           sendRes(res, 'error');
@@ -234,6 +245,7 @@ module.exports = function(router) {
           });
         }
       });
+
       ee.on('s3done', function() {
         s3done = true;
         sendRes(res, message);
@@ -247,5 +259,4 @@ module.exports = function(router) {
         sendRes(res, message);
       });
     });
-
 };
