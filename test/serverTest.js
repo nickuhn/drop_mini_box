@@ -3,6 +3,7 @@ var chai             = require('chai');
 var mocha            = require('mocha');
 var server           = require(__dirname + '/../server');
 var chaiHttp         = require('chai-http');
+var mongoose         = require('mongoose');
 var expect           = chai.expect;
 process.env.MONGOURI = 'mongodb://localhost/userTest_db';
 chai.use(chaiHttp);
@@ -108,6 +109,8 @@ describe('Files REST API', function() {
     chai.request('localhost:3000')
       .delete('/api/users/SirTestsalot')
       .end();
-      done();
+      mongoose.connection.db.dropDatabase(function() {
+        done();
+      });
   })
 });
